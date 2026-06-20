@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FF 机器人课程在 Afterschool 中的应用与结合点分析报告</title>
+  <style>
+    :root {
+      --ink: #18212f;
+      --muted: #607086;
+      --line: #d7dfeb;
+      --paper: #f7f9fb;
+      --white: #ffffff;
+      --navy: #183d5d;
+      --cyan: #0f8b9a;
+      --mint: #2f8f72;
+      --gold: #b46f18;
+      --rose: #a64253;
+      --soft-cyan: #e2f5f7;
+      --soft-mint: #e8f5ee;
+      --soft-gold: #fff1df;
+      --soft-rose: #fae8ec;
+      --shadow: 0 10px 26px rgba(24, 33, 47, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(15, 139, 154, 0.28);
+    }
+
+    a:hover {
+      border-bottom-color: var(--cyan);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 249, 251, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-weight: 780;
+      color: var(--navy);
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--ink);
+      border-bottom: 0;
+    }
+
+    nav a:hover {
+      color: var(--cyan);
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        linear-gradient(115deg, rgba(24, 61, 93, 0.96), rgba(15, 139, 154, 0.88)),
+        radial-gradient(circle at 75% 35%, rgba(255, 255, 255, 0.22), transparent 34%),
+        #183d5d;
+      border-bottom: 1px solid rgba(24, 33, 47, 0.14);
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 58px 24px 42px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 14px;
+      font-weight: 720;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.22;
+    }
+
+    h1 {
+      font-size: 42px;
+      max-width: 780px;
+      font-weight: 780;
+    }
+
+    .subtitle {
+      margin: 18px 0 0;
+      max-width: 780px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+    }
+
+    .hero-pills {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .robot-visual {
+      min-height: 320px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.16);
+    }
+
+    .circuit {
+      position: relative;
+      height: 245px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+      background-size: 34px 34px;
+      overflow: hidden;
+    }
+
+    .chip {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 118px;
+      height: 92px;
+      transform: translate(-50%, -50%);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--navy);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 800;
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+    }
+
+    .chip::before,
+    .chip::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      height: 7px;
+      border-top: 2px solid rgba(24, 61, 93, 0.35);
+      border-bottom: 2px solid rgba(24, 61, 93, 0.35);
+    }
+
+    .chip::before {
+      top: 12px;
+    }
+
+    .chip::after {
+      bottom: 12px;
+    }
+
+    .circuit-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      padding: 8px 10px;
+      min-width: 94px;
+      border-radius: 8px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.93);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
+      font-size: 13px;
+      font-weight: 760;
+      text-align: center;
+    }
+
+    .line {
+      position: absolute;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.58);
+      transform-origin: left center;
+    }
+
+    .visual-note {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 34px 24px 68px;
+    }
+
+    section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 27px;
+    }
+
+    .section-kicker {
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 790px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .two-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .three-col {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .four-col {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .panel,
+    .card,
+    .metric,
+    .table-wrap,
+    .timeline,
+    .matrix {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 24px;
+    }
+
+    .verdict {
+      padding: 18px;
+      border-left: 5px solid var(--cyan);
+      border-radius: 8px;
+      background: var(--soft-cyan);
+    }
+
+    .verdict h3 {
+      color: var(--navy);
+      font-size: 20px;
+    }
+
+    .verdict p,
+    .panel p,
+    .card p {
+      margin: 10px 0 0;
+    }
+
+    .panel-copy p {
+      color: var(--ink);
+    }
+
+    .metric {
+      min-height: 136px;
+      padding: 18px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 680;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      color: var(--cyan);
+      font-size: 29px;
+      line-height: 1.08;
+      font-weight: 820;
+    }
+
+    .metric .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card {
+      padding: 18px;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .tag.cyan {
+      color: var(--cyan);
+      background: var(--soft-cyan);
+    }
+
+    .tag.mint {
+      color: var(--mint);
+      background: var(--soft-mint);
+    }
+
+    .tag.gold {
+      color: var(--gold);
+      background: var(--soft-gold);
+    }
+
+    .tag.rose {
+      color: var(--rose);
+      background: var(--soft-rose);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef3f7;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .score {
+      display: inline-flex;
+      min-width: 68px;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .score.high {
+      color: var(--mint);
+      background: var(--soft-mint);
+    }
+
+    .score.mid {
+      color: var(--gold);
+      background: var(--soft-gold);
+    }
+
+    .score.low {
+      color: var(--rose);
+      background: var(--soft-rose);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flow-step {
+      min-height: 148px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .flow-step .num {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--navy);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .flow-step h3 {
+      margin-top: 12px;
+      font-size: 17px;
+    }
+
+    .flow-step p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .timeline {
+      padding: 20px;
+    }
+
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr);
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-row:last-child {
+      border-bottom: 0;
+    }
+
+    .timeline-time {
+      font-weight: 780;
+      color: var(--navy);
+    }
+
+    .timeline-content strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .timeline-content span {
+      color: var(--muted);
+    }
+
+    .matrix {
+      padding: 20px;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+    }
+
+    .week {
+      min-height: 84px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #eef3f7;
+      border: 1px solid #d7dfeb;
+      font-size: 12px;
+    }
+
+    .week strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .print-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--cyan);
+      border-radius: 8px;
+      background: var(--cyan);
+      color: #fff;
+      padding: 9px 14px;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0c7784;
+    }
+
+    .source-list {
+      columns: 2;
+      column-gap: 28px;
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-list li {
+      break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    .footnote {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 940px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      .hero-inner,
+      .panel,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .three-col,
+      .four-col,
+      .flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .matrix-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-inner,
+      main,
+      .topbar-inner {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .three-col,
+      .four-col,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-row {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .source-list {
+        columns: 1;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .print-actions {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero {
+        color: var(--ink);
+        background: #fff;
+        border-bottom: 2px solid var(--ink);
+      }
+
+      .subtitle,
+      .pill,
+      .visual-note {
+        color: var(--ink);
+      }
+
+      .panel,
+      .card,
+      .metric,
+      .table-wrap,
+      .timeline,
+      .matrix,
+      .flow-step,
+      .robot-visual {
+        box-shadow: none;
+      }
+
+      section {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">FF Robotics x Afterschool</div>
+      <nav aria-label="报告导航">
+        <a href="#summary">结论</a>
+        <a href="#fit">结合点</a>
+        <a href="#products">产品</a>
+        <a href="#pilot">试点</a>
+        <a href="#operations">运营</a>
+        <a href="#sources">来源</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Walnut / Diamond Bar / Rowland Heights 场景 · 资料截至 2026-06-19</p>
+        <h1>FF 机器人课程在 Afterschool 中的应用与结合点分析报告</h1>
+        <p class="subtitle">
+          机器人教育最适合成为 afterschool 的高价值差异化模块：先解决接送、作业和安全，再用 FF 自研机器人课程、工程项目和成果展示提高家长感知价值。
+        </p>
+        <div class="hero-pills">
+          <span class="pill">核心定位：FF Robotics Premium Track</span>
+          <span class="pill">主力年级：3-8 年级</span>
+          <span class="pill">导入方式：作业后项目制学习</span>
+        </div>
+      </div>
+      <div class="robot-visual" aria-label="机器人教育结合点示意">
+        <div class="circuit">
+          <div class="line" style="left:25%; top:26%; width:170px; transform:rotate(22deg);"></div>
+          <div class="line" style="left:25%; top:76%; width:180px; transform:rotate(-22deg);"></div>
+          <div class="line" style="left:55%; top:31%; width:165px; transform:rotate(-20deg);"></div>
+          <div class="line" style="left:55%; top:70%; width:165px; transform:rotate(20deg);"></div>
+          <div class="chip">STEM<br>引擎</div>
+          <div class="circuit-node" style="left:22%; top:24%;">接送托管</div>
+          <div class="circuit-node" style="left:22%; top:78%;">作业完成</div>
+          <div class="circuit-node" style="left:78%; top:26%;">FF课程项目</div>
+          <div class="circuit-node" style="left:78%; top:76%;">成果展示</div>
+        </div>
+        <p class="visual-note">关键不是“开一节机器人课”，而是把机器人嵌入 afterschool 的完整服务闭环。</p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="print-actions">
+      <button type="button" onclick="window.print()">打印 / 保存 PDF</button>
+    </div>
+
+    <section id="summary">
+      <div class="section-head">
+        <div>
+          <h2>一页结论</h2>
+          <p class="section-kicker">机器人教育不是 afterschool 的主体，但它可以成为提高客单价和品牌识别度的核心升级模块。</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="verdict">
+          <h3>建议结论：值得做，但要嵌入式做</h3>
+          <p>
+            Walnut 周边家长愿意为可见的学术与 STEM 成果付费。FF 自研机器人课程如果单独卖兴趣课，容易被周末机构分流；如果嵌入 afterschool，可同时解决“孩子有人接、作业有人管、能力有提升、成果能展示”四个问题，并形成区别于通用套件课程的自有品牌心智。
+          </p>
+        </div>
+        <div class="panel-copy">
+          <p>
+            最优产品形态是：普通 afterschool 作为基本盘，FF 机器人课程作为 STEM Premium Track。日常节奏先完成 homework / reading / math，再进入 FF robotics project block。这样既符合家长对作业完成的刚需，也能让机构建立不同于学区托管、单科补习和通用机器人套件课的定位。
+          </p>
+          <p>
+            第一阶段建议做 12 周小规模试点，而不是一开始重资产扩张。先验证 FF 课程的年级分层、课堂脚本、项目材料、老师能力、家长反馈和设备损耗，再决定是否开放进阶班、假期营或区域展示活动。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>价值定位</h2>
+          <p class="section-kicker">在 afterschool 里，机器人教育承担的不是单一课程功能，而是商业上的三重价值。</p>
+        </div>
+      </div>
+      <div class="grid three-col">
+        <div class="metric">
+          <div class="label">招生钩子</div>
+          <div class="value">更好记</div>
+          <div class="note">比“作业辅导”更有画面感，适合招生海报、开放日和短视频传播。</div>
+        </div>
+        <div class="metric">
+          <div class="label">升价模块</div>
+          <div class="value">可加价</div>
+          <div class="note">可从 Base Care 升级到 Academic Plus / STEM Plus，提高每生收入。</div>
+        </div>
+        <div class="metric">
+          <div class="label">成果展示</div>
+          <div class="value">可见化</div>
+          <div class="note">Demo Day、项目日志、短视频和作品档案比普通补习更容易让家长感知价值。</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fit">
+      <div class="section-head">
+        <div>
+          <h2>核心结合点</h2>
+          <p class="section-kicker">把机器人教育拆成技能、场景和家长价值，才能真正融入 afterschool。</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>结合点</th>
+              <th>课堂形式</th>
+              <th>对应能力</th>
+              <th>家长感知价值</th>
+              <th>适配度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>作业后 STEM Block</td>
+              <td>每天或每周固定 45-60 分钟 project lab</td>
+              <td>动手、逻辑、调试、专注力</td>
+              <td>不是只看孩子，而是有高质量活动</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>数学应用</td>
+              <td>用机器人任务讲角度、距离、速度、比例、误差</td>
+              <td>测量、空间想象、数据意识</td>
+              <td>数学变得可见，不只是刷题</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>英文表达</td>
+              <td>Project journal、展示稿、设计说明、团队复盘</td>
+              <td>写作、口语、结构化表达</td>
+              <td>STEM 和英文表达一起提升</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>FF 项目展示</td>
+              <td>FF 课程主题任务、团队开发、阶段 Demo、家长展示</td>
+              <td>工程设计、团队协作、表达、抗挫折</td>
+              <td>有作品、展示、项目档案和长期成长路径</td>
+              <td><span class="score mid">中高</span></td>
+            </tr>
+            <tr>
+              <td>假期营</td>
+              <td>Winter / Spring / Summer robotics camp</td>
+              <td>项目制学习、展示、快速迭代</td>
+              <td>解决假期托管，也有明确学习主题</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>高中路径预热</td>
+              <td>6-8 年级 Python、传感器、Arduino、AI vision、ROS-lite 入门</td>
+              <td>编程、工程思维、技术表达</td>
+              <td>为学校 STEM club、science fair、工程类社团和后续 AI/机器人学习做准备</td>
+              <td><span class="score mid">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="products">
+      <div class="section-head">
+        <div>
+          <h2>产品分层</h2>
+          <p class="section-kicker">机器人课程应按年龄和家长期待分层，避免 K-2、3-5、6-8 混班导致体验失衡。</p>
+        </div>
+      </div>
+      <div class="grid four-col">
+        <div class="card">
+          <span class="tag cyan">K-2 / 1-3</span>
+          <h3>FF Robotics Explorer</h3>
+          <p>低屏幕、重搭建、重表达。用机械结构、简单传感器和主题故事建立 FF 机器人课程入口。</p>
+        </div>
+        <div class="card">
+          <span class="tag mint">3-5</span>
+          <h3>FF Robotics Builder</h3>
+          <p>学习结构、传感器、基础编程、任务挑战。适合作为 afterschool 主力升级包。</p>
+        </div>
+        <div class="card">
+          <span class="tag gold">4-8</span>
+          <h3>FF Applied Robotics</h3>
+          <p>围绕 FF 自研项目任务做团队开发，强调需求拆解、工程日志、调试复盘和成果展示。</p>
+        </div>
+        <div class="card">
+          <span class="tag rose">6-8</span>
+          <h3>Engineering Lab</h3>
+          <p>加入 Python、Arduino、AI sensor、CAD、ROS-lite 和工程日志，服务中学高阶需求。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>日常时间嵌入</h2>
+          <p class="section-kicker">家长最怕“玩了一下午，作业没写完”。时间表必须先保证 afterschool 基本盘。</p>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-time">3:00-4:00</div>
+          <div class="timeline-content">
+            <strong>接送、snack、过渡休息</strong>
+            <span>完成从学校到机构的安全交接，给孩子降噪、补充能量。</span>
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">4:00-5:00</div>
+          <div class="timeline-content">
+            <strong>Homework / Reading / Math</strong>
+            <span>优先解决作业、阅读和基础学术任务，保持家长信任。</span>
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">5:00-6:00</div>
+          <div class="timeline-content">
+            <strong>FF Robotics Project Block</strong>
+            <span>按小组完成 FF 课程任务中的搭建、编程、测试、复盘，老师记录每个孩子的贡献。</span>
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-time">6:00-6:30</div>
+          <div class="timeline-content">
+            <strong>Pickup + Parent Feedback</strong>
+            <span>用照片、简短评价和项目日志让家长看到当天学习成果。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pilot">
+      <div class="section-head">
+        <div>
+          <h2>12 周试点课程</h2>
+          <p class="section-kicker">先用 12 周验证 FF 课程与 afterschool 的融合效果，再决定是否扩张设备、师资和进阶班。</p>
+        </div>
+      </div>
+      <div class="matrix">
+        <div class="matrix-grid">
+          <div class="week"><strong>W1</strong>FF课程导入、规则、安全、团队角色</div>
+          <div class="week"><strong>W2</strong>机械结构、连接方式、稳定性测试</div>
+          <div class="week"><strong>W3</strong>执行器、运动控制、速度与转向</div>
+          <div class="week"><strong>W4</strong>距离、角度、路径规划、测量误差</div>
+          <div class="week"><strong>W5</strong>传感器、条件判断、环境感知</div>
+          <div class="week"><strong>W6</strong>循环、调试、故障记录与复盘</div>
+          <div class="week"><strong>W7</strong>FF任务 1：自动运输/投递</div>
+          <div class="week"><strong>W8</strong>FF任务 2：避障/巡线/导航</div>
+          <div class="week"><strong>W9</strong>团队方案设计与工程迭代</div>
+          <div class="week"><strong>W10</strong>项目海报、工程日志、英文展示稿</div>
+          <div class="week"><strong>W11</strong>模拟展示、性能优化、可靠性测试</div>
+          <div class="week"><strong>W12</strong>FF Robotics Demo Day + 家长反馈</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>FF 课程路径选择</h2>
+          <p class="section-kicker">FF 自研课程应先建立清晰学习路径和展示机制，再按学生能力导入高阶工程项目。</p>
+        </div>
+      </div>
+      <div class="grid three-col">
+        <div class="card">
+          <span class="tag cyan">Foundation</span>
+          <h3>FF 入门项目线</h3>
+          <p>面向 K-3/3-5 年级，以机械结构、传感器体验、低门槛编程和主题任务为主，帮助学生建立机器人学习兴趣。</p>
+        </div>
+        <div class="card">
+          <span class="tag mint">Project Lab</span>
+          <h3>FF 项目制学习线</h3>
+          <p>面向 3-8 年级，以任务拆解、工程日志、算法调试、团队角色和阶段 Demo 为主，适合作为 afterschool 主力升级产品。</p>
+        </div>
+        <div class="card">
+          <span class="tag gold">Advanced Lab</span>
+          <h3>FF 高阶工程线</h3>
+          <p>面向 6-8 年级，逐步加入 Python、AI vision、ROS-lite、CAD 和复杂任务，让优秀学生形成长期学习路径。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="operations">
+      <div class="section-head">
+        <div>
+          <h2>运营模型</h2>
+          <p class="section-kicker">机器人课的成败，更多取决于老师、流程和家长反馈，而不是买了多少套设备。</p>
+        </div>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="num">1</div>
+          <h3>设备标准化</h3>
+          <p>每组固定 FF 课程套件、编号、零件清单和课后盘点，降低损耗和找件时间。</p>
+        </div>
+        <div class="flow-step">
+          <div class="num">2</div>
+          <h3>老师脚本化</h3>
+          <p>每节 FF 课程都有目标、示范、挑战、复盘和照片记录，避免自由玩具化。</p>
+        </div>
+        <div class="flow-step">
+          <div class="num">3</div>
+          <h3>学生分工</h3>
+          <p>Builder、Coder、Tester、Presenter 轮换，让每个学生都有可观察贡献。</p>
+        </div>
+        <div class="flow-step">
+          <div class="num">4</div>
+          <h3>家长可视化</h3>
+          <p>每月学习报告、短视频、FF 项目日志和 Demo Day，让价值被持续看见。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>风险与控制</h2>
+          <p class="section-kicker">机器人教育很吸引人，但运营细节处理不好，会快速变成高成本低口碑项目。</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>风险</th>
+              <th>表现</th>
+              <th>控制方法</th>
+              <th>优先级</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>玩具化</td>
+              <td>孩子只是摆弄材料，缺少明确学习目标</td>
+              <td>每节 FF 课程必须有工程目标、测试指标和复盘记录</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>作业冲突</td>
+              <td>机器人课占用作业时间，家长满意度下降</td>
+              <td>先 homework，再 STEM block；未完成作业不得进入高阶挑战</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>年龄混班</td>
+              <td>低龄学生跟不上，高龄学生觉得无聊</td>
+              <td>K-2、3-5、6-8 分层；FF 高阶项目班单独筛选</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>老师瓶颈</td>
+              <td>老师会搭但不会教，课堂秩序差</td>
+              <td>训练课堂脚本、故障库、提问方式和团队管理</td>
+              <td><span class="score high">高</span></td>
+            </tr>
+            <tr>
+              <td>成果过度承诺</td>
+              <td>家长期待短期看到“高级机器人能力”，压力反噬口碑</td>
+              <td>承诺项目过程、能力成长和展示成果，不承诺短期达到专业工程水平</td>
+              <td><span class="score mid">中高</span></td>
+            </tr>
+            <tr>
+              <td>设备损耗</td>
+              <td>零件丢失、传感器损坏、课前准备混乱</td>
+              <td>编号、收纳、借还表、课后 5 分钟盘点</td>
+              <td><span class="score mid">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Walnut 市场打法</h2>
+          <p class="section-kicker">在 Walnut 周边，机器人教育应服务高教育投入家庭的“可见成果”和“长期路径”需求。</p>
+        </div>
+      </div>
+      <div class="grid three-col">
+        <div class="card">
+          <span class="tag cyan">招生话术</span>
+          <h3>不是玩机器人，是工程思维训练</h3>
+          <p>对家长强调数学应用、英文展示、团队协作和项目成果，避免只讲“孩子会喜欢”。</p>
+        </div>
+        <div class="card">
+          <span class="tag mint">定价逻辑</span>
+          <h3>做升级包，不做免费赠品</h3>
+          <p>Base Care 保持基本托管；FF Robotics Builder、FF Applied Robotics 和 FF Engineering Lab 作为加价项。</p>
+        </div>
+        <div class="card">
+          <span class="tag gold">转化方式</span>
+          <h3>开放日 + Demo Day</h3>
+          <p>用 45 分钟体验课和期末展示完成转化，比单页宣传更有效。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>90 天落地计划</h2>
+          <p class="section-kicker">先用低风险试点跑通课程、运营和家长反馈，再扩大规模。</p>
+        </div>
+      </div>
+      <div class="grid three-col">
+        <div class="card">
+          <span class="tag cyan">第 1-30 天</span>
+          <h3>课程与设备准备</h3>
+          <p>确定年级段、整理 FF 课程套件与材料包、设计 12 周课程、训练老师、制作招生页和体验课。</p>
+        </div>
+        <div class="card">
+          <span class="tag mint">第 31-60 天</span>
+          <h3>小班试点</h3>
+          <p>开 1-2 个 FF 机器人试点班，每班 8-10 人；每周收集家长反馈、课堂照片和学生作品。</p>
+        </div>
+        <div class="card">
+          <span class="tag gold">第 61-90 天</span>
+          <h3>展示与升级</h3>
+          <p>举办 FF Robotics Demo Day，发布学习报告，筛选学生进入下一期高阶项目班。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head">
+        <div>
+          <h2>信息来源</h2>
+          <p class="section-kicker">本报告基于前序 Walnut afterschool 市场分析，并按 FF 自研机器人课程方向重写；外部资料仅用于市场和教育标准背景。</p>
+        </div>
+      </div>
+      <div class="footnote">
+        <ul class="source-list">
+          <li>FF 自研机器人课程方向：课程名称、设备清单和正式大纲待替换为内部定稿版本</li>
+          <li><a href="https://www.cde.ca.gov/be/st/ss/computerscicontentstds.asp">California Department of Education Computer Science Standards</a></li>
+          <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare?usp=sharing">WVUSD Child Care & Preschool Programs</a></li>
+          <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare/elo-p?usp=sharing">WVUSD Expanded Learning Opportunities Program</a></li>
+          <li><a href="https://jokey8-boop.github.io/walnut-afterschool-analysis/">Walnut Afterschool 市场分析报告</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
