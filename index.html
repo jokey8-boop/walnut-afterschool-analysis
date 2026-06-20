@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Walnut CA 附近 Afterschool 市场分析报告</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #5f6b7a;
+      --line: #d8dee7;
+      --paper: #fbfaf7;
+      --white: #ffffff;
+      --teal: #1f7a74;
+      --teal-soft: #e4f3f1;
+      --blue: #315f9b;
+      --blue-soft: #e7eef8;
+      --amber: #b36b17;
+      --amber-soft: #fff2df;
+      --red: #a33a3a;
+      --red-soft: #fae8e8;
+      --green: #2d6f3d;
+      --green-soft: #e7f3e8;
+      --shadow: 0 8px 22px rgba(31, 41, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(49, 95, 155, 0.28);
+    }
+
+    a:hover {
+      border-bottom-color: var(--blue);
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(251, 250, 247, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      min-width: 220px;
+      font-weight: 700;
+      color: var(--teal);
+    }
+
+    nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: var(--ink);
+      border-bottom: 0;
+      padding: 5px 0;
+    }
+
+    nav a:hover {
+      color: var(--teal);
+    }
+
+    .hero {
+      background:
+        linear-gradient(90deg, rgba(31, 122, 116, 0.94), rgba(49, 95, 155, 0.86)),
+        linear-gradient(135deg, #1f7a74, #315f9b);
+      color: #fff;
+      border-bottom: 1px solid rgba(31, 41, 51, 0.12);
+    }
+
+    .hero-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 58px 24px 40px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      font-size: 14px;
+      opacity: 0.86;
+      font-weight: 650;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: 42px;
+      font-weight: 760;
+    }
+
+    .subtitle {
+      margin: 18px 0 0;
+      max-width: 760px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+    }
+
+    .hero-meta {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.93);
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .market-visual {
+      min-height: 300px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 8px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.11);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
+    }
+
+    .map-canvas {
+      position: relative;
+      height: 240px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.13) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255, 255, 255, 0.13) 1px, transparent 1px);
+      background-size: 38px 38px;
+    }
+
+    .market-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      min-width: 88px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .market-node small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .ring {
+      position: absolute;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      border: 1px dashed rgba(255, 255, 255, 0.48);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .ring.one {
+      width: 140px;
+      height: 140px;
+    }
+
+    .ring.two {
+      width: 230px;
+      height: 190px;
+    }
+
+    .ring.three {
+      width: 330px;
+      height: 238px;
+    }
+
+    .visual-note {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 34px 24px 64px;
+    }
+
+    section {
+      margin-top: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 27px;
+      color: var(--ink);
+    }
+
+    .section-kicker {
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 780px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .metric {
+      min-height: 146px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      font-size: 31px;
+      line-height: 1.05;
+      font-weight: 780;
+      color: var(--teal);
+    }
+
+    .metric .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-panel {
+      padding: 24px;
+      border-radius: 8px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 24px;
+    }
+
+    .verdict {
+      padding: 18px;
+      border-left: 5px solid var(--teal);
+      background: var(--teal-soft);
+      border-radius: 8px;
+    }
+
+    .verdict h3 {
+      font-size: 20px;
+      color: var(--teal);
+    }
+
+    .verdict p,
+    .summary-copy p {
+      margin: 10px 0 0;
+    }
+
+    .summary-copy {
+      color: var(--ink);
+    }
+
+    .two-col {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .three-col {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .item {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .item h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .tag.teal {
+      color: var(--teal);
+      background: var(--teal-soft);
+    }
+
+    .tag.blue {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .tag.amber {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .tag.red {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .tag.green {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    th {
+      color: var(--ink);
+      background: #f3f6f8;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .score {
+      display: inline-flex;
+      min-width: 72px;
+      justify-content: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 750;
+      font-size: 12px;
+    }
+
+    .score.high {
+      color: var(--green);
+      background: var(--green-soft);
+    }
+
+    .score.mid {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .score.low {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .bars {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 150px minmax(160px, 1fr) 74px;
+      gap: 12px;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    .bar-track {
+      height: 16px;
+      border-radius: 999px;
+      background: #e8edf2;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+    }
+
+    .positioning {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .axis {
+      min-height: 320px;
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, transparent 49.7%, rgba(31, 41, 51, 0.16) 49.7%, rgba(31, 41, 51, 0.16) 50.3%, transparent 50.3%),
+        linear-gradient(0deg, transparent 49.7%, rgba(31, 41, 51, 0.16) 49.7%, rgba(31, 41, 51, 0.16) 50.3%, transparent 50.3%),
+        #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .axis-label {
+      position: absolute;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .axis-label.top {
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .axis-label.bottom {
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .axis-label.left {
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+    }
+
+    .axis-label.right {
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+    }
+
+    .dot {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 2px solid var(--teal);
+      box-shadow: 0 10px 22px rgba(31, 41, 51, 0.12);
+      font-size: 12px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .dot.school {
+      border-color: var(--blue);
+    }
+
+    .dot.city {
+      border-color: var(--amber);
+    }
+
+    .dot.tutor {
+      border-color: var(--red);
+    }
+
+    .dot.opportunity {
+      color: #fff;
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .rec-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rec-list li {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .rec-list strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .rec-list span {
+      color: var(--muted);
+    }
+
+    .footnotes {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-list {
+      columns: 2;
+      column-gap: 28px;
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .source-list li {
+      break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    .print-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid var(--teal);
+      border-radius: 8px;
+      background: var(--teal);
+      color: #fff;
+      padding: 9px 14px;
+      font: inherit;
+      font-weight: 720;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #176661;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner,
+      .summary-panel,
+      .two-col,
+      .positioning {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics,
+      .three-col {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      nav {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .metrics,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+
+      .bar-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .hero-inner,
+      main,
+      .topbar-inner {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .source-list {
+        columns: 1;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .print-actions {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero {
+        color: var(--ink);
+        background: #fff;
+        border-bottom: 2px solid var(--ink);
+      }
+
+      .subtitle,
+      .pill,
+      .visual-note {
+        color: var(--ink);
+      }
+
+      .market-visual {
+        box-shadow: none;
+        border-color: var(--line);
+        background: #fff;
+      }
+
+      .metric,
+      .item,
+      .summary-panel,
+      .bars,
+      .table-wrap,
+      .axis,
+      .rec-list li {
+        box-shadow: none;
+      }
+
+      section {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">Walnut Afterschool Report</div>
+        <nav aria-label="报告导航">
+          <a href="#summary">结论</a>
+          <a href="#demand">需求</a>
+          <a href="#supply">供给</a>
+          <a href="#gap">机会</a>
+          <a href="#strategy">建议</a>
+          <a href="#sources">来源</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">资料截至 2026-06-19 · Walnut, Diamond Bar, Rowland Heights 周边</p>
+          <h1>Walnut CA 附近 Afterschool 市场分析报告</h1>
+          <p class="subtitle">
+            Walnut 的课后服务市场不是“有没有需求”的问题，而是“谁能同时解决接送、安全、作业、学术提升和双语沟通”的问题。基础托管供给已经存在，但高质量学术型 afterschool 仍有清晰空位。
+          </p>
+          <div class="hero-meta">
+            <span class="pill">核心人群：K-8 家庭</span>
+            <span class="pill">主战场：Walnut + Diamond Bar</span>
+            <span class="pill">机会方向：托管 + 学术提升</span>
+          </div>
+        </div>
+        <div class="market-visual" aria-label="Walnut 周边课后市场范围示意">
+          <div class="map-canvas">
+            <div class="ring one"></div>
+            <div class="ring two"></div>
+            <div class="ring three"></div>
+            <div class="market-node" style="left:50%; top:52%;">Walnut<small>核心区</small></div>
+            <div class="market-node" style="left:70%; top:47%;">Diamond Bar<small>高相关</small></div>
+            <div class="market-node" style="left:30%; top:62%;">Rowland Heights<small>双语需求</small></div>
+            <div class="market-node" style="left:58%; top:22%;">West Covina<small>外溢客源</small></div>
+            <div class="market-node" style="left:73%; top:77%;">Chino Hills<small>可拓展</small></div>
+          </div>
+          <p class="visual-note">建议选址关注学校接送动线，而不是只看 Walnut 市界。</p>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="print-actions">
+        <button type="button" onclick="window.print()">打印 / 保存 PDF</button>
+      </div>
+
+      <section id="summary">
+        <div class="section-head">
+          <div>
+            <h2>一页结论</h2>
+            <p class="section-kicker">适合进入，但不适合做低差异化普通托管。</p>
+          </div>
+        </div>
+        <div class="summary-panel">
+          <div class="verdict">
+            <h3>市场判断：中高吸引力</h3>
+            <p>
+              Walnut 周边家庭教育支付意愿强，学区课后项目覆盖广但名额紧，且不提供真正 tutoring。新机构应避开“便宜看护”定位，切入“接送 + 作业完成 + 数学/英文/写作提升”。
+            </p>
+          </div>
+          <div class="summary-copy">
+            <p>
+              最大竞争来自 WVUSD Fun Club/ELO-P 和 Rowland Unified Expanded Learning，它们解决了安全、校内便利和到 6 点的基础需求。最大机会来自这些项目无法充分满足的部分：学术提升、个性化反馈、双语家长沟通、晚接延展、假期营，以及跨校接送。
+            </p>
+            <p>
+              推荐定位为精品学术型 afterschool，而不是 daycare。目标客群是 K-5 双职工家庭和 3-8 年级有数学、英文、写作提升需求的家庭。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="demand">
+        <div class="section-head">
+          <div>
+            <h2>需求侧信号</h2>
+            <p class="section-kicker">Walnut 家庭结构、收入和教育背景共同指向较强的课后教育消费能力。</p>
+          </div>
+        </div>
+        <div class="grid metrics">
+          <div class="metric">
+            <div class="label">家庭收入中位数</div>
+            <div class="value">$129k</div>
+            <div class="note">2020-2024 年 Walnut household income，支付能力强。</div>
+          </div>
+          <div class="metric">
+            <div class="label">本科及以上比例</div>
+            <div class="value">57.3%</div>
+            <div class="note">家长对学习结果和升学路径更敏感。</div>
+          </div>
+          <div class="metric">
+            <div class="label">家中非英语语言</div>
+            <div class="value">68.3%</div>
+            <div class="note">中英双语沟通、华人社区触达有实际价值。</div>
+          </div>
+          <div class="metric">
+            <div class="label">18 岁以下人口</div>
+            <div class="value">19.8%</div>
+            <div class="note">儿童基数不低，但市内人口有老龄化趋势。</div>
+          </div>
+        </div>
+
+        <div class="grid two-col" style="margin-top:16px;">
+          <div class="bars">
+            <h3>需求强度判断</h3>
+            <div class="bar-row">
+              <span>放学接送</span>
+              <div class="bar-track"><div class="bar-fill" style="width:92%"></div></div>
+              <strong>高</strong>
+            </div>
+            <div class="bar-row">
+              <span>作业完成</span>
+              <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+              <strong>高</strong>
+            </div>
+            <div class="bar-row">
+              <span>数学/英文提升</span>
+              <div class="bar-track"><div class="bar-fill" style="width:86%"></div></div>
+              <strong>高</strong>
+            </div>
+            <div class="bar-row">
+              <span>兴趣活动</span>
+              <div class="bar-track"><div class="bar-fill" style="width:68%"></div></div>
+              <strong>中高</strong>
+            </div>
+            <div class="bar-row">
+              <span>纯看护</span>
+              <div class="bar-track"><div class="bar-fill" style="width:52%"></div></div>
+              <strong>中</strong>
+            </div>
+          </div>
+          <div class="item">
+            <span class="tag amber">关键提醒</span>
+            <h3>Walnut 市内不是完整市场边界</h3>
+            <p>
+              Walnut 2020-2024 估算人口较 2020 基准下降约 4.2%，且 65 岁以上比例已达 24.0%。如果只依赖 Walnut 市内自然增长，天花板偏低。更合理的服务半径应包括 Diamond Bar、Rowland Heights、West Covina/Pomona 边界和 Chino Hills 北侧。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="supply">
+        <div class="section-head">
+          <div>
+            <h2>供给与竞品格局</h2>
+            <p class="section-kicker">公立学区承担基础托管，私营机构应在学术结果和服务灵活性上竞争。</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>供给类型</th>
+                <th>代表项目</th>
+                <th>主要优势</th>
+                <th>明显限制</th>
+                <th>竞争压力</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>学区基础托管</td>
+                <td>WVUSD Fun Club</td>
+                <td>校内便利，覆盖 9 所小学；6:30 am 到放学后 6:00 pm；包含作业时间和活动。</td>
+                <td>只服务本校学生；更偏看护和活动，不是学术补习。</td>
+                <td><span class="score high">高</span></td>
+              </tr>
+              <tr>
+                <td>学区扩展学习</td>
+                <td>WVUSD ELO-P</td>
+                <td>对符合条件学生低成本或免费；有 snack、活动、作业时间。</td>
+                <td>2025-26 显示 all sites full；资格和名额限制明显；不提供 tutoring。</td>
+                <td><span class="score high">高</span></td>
+              </tr>
+              <tr>
+                <td>中学课后照看</td>
+                <td>WVUSD Teen Scene</td>
+                <td>覆盖 Chaparral、South Pointe、Suzanne；适合中学生放学后留校。</td>
+                <td>学术强化有限，更多是 homework time 和 hands-on activities。</td>
+                <td><span class="score mid">中</span></td>
+              </tr>
+              <tr>
+                <td>邻近学区项目</td>
+                <td>Rowland USD Expanded Learning</td>
+                <td>覆盖 elementary、TK-8 academies、Giano Intermediate；放学至 6:00 pm；多语言报名。</td>
+                <td>服务边界与学校归属相关；对 Walnut 核心区不是全覆盖。</td>
+                <td><span class="score mid">中高</span></td>
+              </tr>
+              <tr>
+                <td>城市兴趣/营地</td>
+                <td>City of Walnut Recreation</td>
+                <td>体育、游泳、camp、Teen Center 等兴趣资源丰富。</td>
+                <td>不是每天接送和作业托管主力。</td>
+                <td><span class="score mid">中</span></td>
+              </tr>
+              <tr>
+                <td>单科补习</td>
+                <td>Kumon、Mathnasium、Eye Level 等类型</td>
+                <td>学科心智强，数学/阅读训练明确。</td>
+                <td>通常不解决接送、晚托、作业管理和综合托管。</td>
+                <td><span class="score high">高</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="gap">
+        <div class="section-head">
+          <div>
+            <h2>市场缺口</h2>
+            <p class="section-kicker">机会来自“基础托管”和“单科补习”之间的空白地带。</p>
+          </div>
+        </div>
+        <div class="positioning">
+          <div class="axis" aria-label="市场定位二维图">
+            <span class="axis-label top">学术提升强</span>
+            <span class="axis-label bottom">看护属性强</span>
+            <span class="axis-label left">低灵活度</span>
+            <span class="axis-label right">高灵活度</span>
+            <span class="dot school" style="left:26%; top:70%;">学区 Fun Club</span>
+            <span class="dot school" style="left:22%; top:58%;">ELO-P</span>
+            <span class="dot city" style="left:60%; top:74%;">City Camps</span>
+            <span class="dot tutor" style="left:74%; top:26%;">单科补习</span>
+            <span class="dot opportunity" style="left:66%; top:42%;">推荐切入点</span>
+          </div>
+          <div class="grid">
+            <div class="item">
+              <span class="tag teal">缺口 1</span>
+              <h3>学区不做真正补习</h3>
+              <p>WVUSD ELO-P 明确说明没有 certificated teachers 提供 academic enhancement curriculum。这给学术型 afterschool 留出位置。</p>
+            </div>
+            <div class="item">
+              <span class="tag blue">缺口 2</span>
+              <h3>名额紧张与 waitlist</h3>
+              <p>WVUSD 2025-26 ELO-P 显示所有点位已满。对没有抢到名额或不符合资格的家庭，私营替代方案有刚需。</p>
+            </div>
+            <div class="item">
+              <span class="tag amber">缺口 3</span>
+              <h3>跨校接送与晚接延展</h3>
+              <p>校内项目便利但边界固定。私营机构若能稳定接送多所学校，并延长到 6:30 pm 或 7:00 pm，会形成服务差异。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="strategy">
+        <div class="section-head">
+          <div>
+            <h2>建议定位与产品设计</h2>
+            <p class="section-kicker">核心定位：Academic Afterschool，而不是普通 daycare。</p>
+          </div>
+        </div>
+        <div class="grid three-col">
+          <div class="item">
+            <span class="tag teal">K-5 主产品</span>
+            <h3>接送 + 作业 + 双语反馈</h3>
+            <p>放学接送、snack、homework block、数学/阅读/写作、户外活动。目标是让家长接走时看到“当天作业已完成，学习有记录”。</p>
+          </div>
+          <div class="item">
+            <span class="tag blue">3-8 年级升级包</span>
+            <h3>数学与英文写作</h3>
+            <p>设置 word problem、reading comprehension、paragraph/essay writing、pre-algebra/algebra，形成比普通托管更高的客单价。</p>
+          </div>
+          <div class="item">
+            <span class="tag amber">假期与 minimum day</span>
+            <h3>解决家长痛点</h3>
+            <p>Winter/Spring/Summer camp、minimum day coverage、teacher conference day coverage，适合提高淡季收入和客户粘性。</p>
+          </div>
+        </div>
+
+        <div class="grid two-col" style="margin-top:16px;">
+          <div>
+            <h3 style="margin-bottom:12px;">推荐套餐</h3>
+            <ul class="rec-list">
+              <li>
+                <strong>Base Care</strong>
+                <span>放学接送、snack、作业监督、自由阅读、户外活动，适合 K-5。</span>
+              </li>
+              <li>
+                <strong>Academic Plus</strong>
+                <span>Base Care + 每周 3 次数学/英文小班课 + 月度报告，主推产品。</span>
+              </li>
+              <li>
+                <strong>Middle School Track</strong>
+                <span>6-8 年级数学、写作、项目制学习，强调升入高中前的能力准备。</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin-bottom:12px;">运营重点</h3>
+            <ul class="rec-list">
+              <li>
+                <strong>选址</strong>
+                <span>优先考虑 Walnut/Diamond Bar 学校接送路线与停车便利，而不是单纯低租金。</span>
+              </li>
+              <li>
+                <strong>合规</strong>
+                <span>若涉及固定儿童照看、接送和长时段托管，需要核查 California child care licensing、保险、背景审查、消防和场地要求。</span>
+              </li>
+              <li>
+                <strong>招生</strong>
+                <span>以“作业完成率、学习报告、双语沟通、稳定接送”作为家长转化话术，避免只讲兴趣活动。</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div>
+            <h2>SWOT 摘要</h2>
+            <p class="section-kicker">进入前需要同时看机会和压力。</p>
+          </div>
+        </div>
+        <div class="grid two-col">
+          <div class="item">
+            <span class="tag green">Strengths</span>
+            <h3>需求质量高</h3>
+            <p>高收入、高学历、重视教育、双语家庭比例高，适合做有学习结果的 afterschool。</p>
+          </div>
+          <div class="item">
+            <span class="tag red">Weaknesses</span>
+            <h3>市内增量有限</h3>
+            <p>Walnut 人口下降且老龄化，必须覆盖周边城市和学校，而不是只靠 Walnut 自然客流。</p>
+          </div>
+          <div class="item">
+            <span class="tag teal">Opportunities</span>
+            <h3>基础托管与补习之间有空位</h3>
+            <p>学区项目满员且不做 tutoring，单科补习不解决接送和晚托，综合型学术 afterschool 有差异化空间。</p>
+          </div>
+          <div class="item">
+            <span class="tag amber">Threats</span>
+            <h3>竞品心智强</h3>
+            <p>学区项目占据便利和低价，成熟补习品牌占据学术单科，新机构需要用服务闭环证明价值。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="sources">
+        <div class="section-head">
+          <div>
+            <h2>信息来源</h2>
+            <p class="section-kicker">本报告主要基于公开官方信息与学区页面整理，具体价格、名额和许可状态建议在决策前电话复核。</p>
+          </div>
+        </div>
+        <div class="footnotes">
+          <ul class="source-list">
+            <li><a href="https://www.census.gov/quickfacts/fact/table/walnutcitycalifornia/PST045223">U.S. Census QuickFacts: Walnut city, California</a></li>
+            <li><a href="https://www.wvusd.org/">Walnut Valley Unified School District</a></li>
+            <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare?usp=sharing">WVUSD Child Care & Preschool Programs</a></li>
+            <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare/fun-club">WVUSD Fun Club</a></li>
+            <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare/elo-p?usp=sharing">WVUSD Expanded Learning Opportunities Program</a></li>
+            <li><a href="https://sites.google.com/wvusd.org/wvusdchildcare/teen-scene">WVUSD Teen Scene</a></li>
+            <li><a href="https://www.rowlandschools.org/apps/pages/index.jsp?uREC_ID=29815&type=d&pREC_ID=2495177">Rowland USD Expanded Learning Opportunities</a></li>
+            <li><a href="https://www.walnutca.gov/For-Residents/Departments/Community-Services/Recreation">City of Walnut Recreation</a></li>
+            <li><a href="https://www.cdss.ca.gov/inforesources/child-care-licensing">California Department of Social Services Child Care Licensing</a></li>
+            <li><a href="https://www.cde.ca.gov/ls/ex/elopinfo.asp">California Department of Education ELO-P</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
